@@ -14,4 +14,12 @@ export class FeatureFlagDomainService {
 
     return this.repository.create(featureFlag);
   }
+
+  async update(id: number, featureFlag: FeatureFlag): Promise<FeatureFlag> {
+    const exists = await this.repository.findByKeyExcludingId(featureFlag.key, id);
+    if (exists) {
+      throw new Error(`Ya existe un feature flag con la key ${featureFlag.key}`);
+    }
+    return this.repository.update(id, featureFlag);
+  }
 }

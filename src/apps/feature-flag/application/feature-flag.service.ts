@@ -15,13 +15,18 @@ export class FeatureFlagService {
         this.domainService = new FeatureFlagDomainService(this.repository);
     }
 
-    async getFeatureFlagById(id: number): Promise<FeatureFlag | null> {      
+    async getFeatureFlagById(id: number): Promise<FeatureFlag | null> {    
         const featureFlag = await this.repository.findById(id);
         return featureFlag;
     }
 
     async createFeatureFlag(dto: FeatureFlagDto): Promise<FeatureFlag | null> {
         const featureFlag = await this.domainService.create(dto as FeatureFlag);
+        return featureFlag;
+    }
+
+    async updateFeatureFlag(id: number, dto: FeatureFlagDto): Promise<FeatureFlag | null> {
+        const featureFlag = await this.domainService.update(id, dto as FeatureFlag);
         return featureFlag;
     }
 }

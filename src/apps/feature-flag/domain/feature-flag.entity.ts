@@ -1,9 +1,9 @@
 export class FeatureFlag {
     id!: number;
     key!: string;
-    description?: string;
+    description?: string | null;
     isEnabled!: boolean;
-    environment?: string;
+    environment?: string | null;
     createdAt!: Date;
     updatedAt!: Date;
 }
