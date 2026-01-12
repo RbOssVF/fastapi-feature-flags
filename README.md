@@ -79,10 +79,10 @@ npm run start:prod
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
-| **GET** | `/feature-flag` | Obtiene todas las feature flags. |
-| **GET** | `/feature-flag/:id` | Obtiene una flag específica por ID. |
-| **POST** | `/feature-flag` | Crea una nueva feature flag. |
-| **PUT** | `/feature-flag/:id` | Actualiza una flag existente. |
+| **GET** | `/api/v1/feature-flag` | Obtiene todas las feature flags. |
+| **GET** | `/api/v1/feature-flag/:id` | Obtiene una flag específica por ID. |
+| **POST** | `/api/v1/feature-flag` | Crea una nueva feature flag. |
+| **PUT** | `/api/v1/feature-flag/:id` | Actualiza una flag existente. |
 
 ### Ejemplo de Body para POST/PUT:
 ```json
