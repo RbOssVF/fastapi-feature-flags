@@ -19,6 +19,10 @@ export class FeatureFlagRepositoryImpl implements FeatureFlagRepository {
     });
   }
 
+  async findAll(): Promise<FeatureFlag[] | null> {
+    return await this.prisma.featureFlag.findMany();
+  }
+
   async findByKeyExcludingId(key: string, id: number): Promise<FeatureFlag | null> {
     return await this.prisma.featureFlag.findFirst({
       where: { key, id: { not: id } },

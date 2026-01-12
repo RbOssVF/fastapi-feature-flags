@@ -7,28 +7,37 @@ import { responseUtil } from "src/shared/utils/response.util";
 
 @Controller('feature-flag')
 export class FeatureFlagPresentation {
-    constructor(private readonly featureFlagService: FeatureFlagService) {}
+    constructor(private readonly featureFlagService: FeatureFlagService) { }
+
+    @Get()
+    async getAllFeatureFlags() {
+        const flags = await this.featureFlagService.getAllFeatureFlags();
+
+        const dataFlags = flags ? flags.map(this.mapFeatureFlag) : [];
+
+        return responseUtil({
+            message: 'Feature flags encontrados',
+            data: dataFlags,
+            estado: true,
+            statusCode: HttpStatus.OK,
+        });
+    }
 
     @Get(':id')
-    async getFeatureFlagById(@Param('id', ParseIntPipe) id: number) {
+    async getFeatureFlagById(
+        @Param('id', ParseIntPipe) id: number,
+    ) {
         const flag = await this.featureFlagService.getFeatureFlagById(id);
+
         if (!flag) {
             return responseUtil({
                 message: 'Feature flag no encontrado',
-                data: null,
                 estado: false,
                 statusCode: HttpStatus.NOT_FOUND,
             });
         }
 
-        const dataFlag = {
-            "id": flag.id,
-            "key": flag.key,
-            "description": flag.description,
-            "status": flag.isEnabled ? 'Enabled' : 'Disabled',
-            "isEnabled": flag.isEnabled,
-            "environment": flag.environment,
-        }
+        const dataFlag = this.mapFeatureFlag(flag);
 
         return responseUtil({
             message: 'Feature flag encontrado',
@@ -36,6 +45,17 @@ export class FeatureFlagPresentation {
             estado: true,
             statusCode: HttpStatus.OK,
         });
+    }
+
+    private mapFeatureFlag(flag: any) {
+        return {
+            id: flag.id,
+            key: flag.key,
+            description: flag.description,
+            status: flag.isEnabled ? 'Enabled' : 'Disabled',
+            isEnabled: flag.isEnabled,
+            environment: flag.environment,
+        };
     }
 
     @Post()
@@ -54,7 +74,7 @@ export class FeatureFlagPresentation {
                 estado: false,
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             });
-        }  
+        }
     }
 
     @Put(':id')

@@ -6,7 +6,7 @@ import { FeatureFlagDto } from "../presentation/feature-flag.dto";
 import { FeatureFlagDomainService } from "../domain/feature-flag.service";
 
 @Injectable()
-export class FeatureFlagService {    
+export class FeatureFlagService {
     private readonly domainService: FeatureFlagDomainService;
     constructor(
         @Inject(FEATURE_FLAG_REPOSITORY)
@@ -15,7 +15,12 @@ export class FeatureFlagService {
         this.domainService = new FeatureFlagDomainService(this.repository);
     }
 
-    async getFeatureFlagById(id: number): Promise<FeatureFlag | null> {    
+    async getAllFeatureFlags(): Promise<FeatureFlag[] | null> {
+        const featureFlags = await this.repository.findAll();
+        return featureFlags;
+    }
+
+    async getFeatureFlagById(id: number): Promise<FeatureFlag | null> {
         const featureFlag = await this.repository.findById(id);
         return featureFlag;
     }
