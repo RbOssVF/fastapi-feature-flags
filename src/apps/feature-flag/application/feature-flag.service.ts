@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@nestjs/common";
 import type { FeatureFlagRepository } from "../domain/feature-flag.repository";
 import { FeatureFlag } from "../domain/feature-flag.entity";
 import { FEATURE_FLAG_REPOSITORY } from "../domain/feature-flag.tokens";
-import { FeatureFlagDto } from "../presentation/feature-flag.dto";
+import { FeatureFlagDto, FeatureFlagDtoEnabled } from "../presentation/feature-flag.dto";
 import { FeatureFlagDomainService } from "../domain/feature-flag.service";
 
 @Injectable()
@@ -32,6 +32,17 @@ export class FeatureFlagService {
 
     async updateFeatureFlag(id: number, dto: FeatureFlagDto): Promise<FeatureFlag | null> {
         const featureFlag = await this.domainService.update(id, dto as FeatureFlag);
+        return featureFlag;
+    }
+
+    async updateFeatureFlagEnabled(id: number, dto: FeatureFlagDtoEnabled): Promise<FeatureFlag | null> {
+        const flag = await this.repository.findById(id);
+        if (!flag) {
+            return null;
+        }
+        flag.isEnabled = dto.isEnabled;
+        console.log(flag);
+        const featureFlag = await this.domainService.update(id, flag);
         return featureFlag;
     }
 }
