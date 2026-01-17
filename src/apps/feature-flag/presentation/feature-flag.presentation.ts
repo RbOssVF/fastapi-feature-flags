@@ -2,7 +2,7 @@ import { Controller, HttpStatus, ParseIntPipe } from "@nestjs/common";
 import { FeatureFlagService } from "../application/feature-flag.service";
 // importar inject post get put delete request
 import { Post, Get, Put, Delete, Request, Param, Body } from "@nestjs/common";
-import { FeatureFlagDto } from "./feature-flag.dto";
+import { FeatureFlagDto, FeatureFlagDtoEnabled } from "./feature-flag.dto";
 import { responseUtil } from "src/shared/utils/response.util";
 
 @Controller('feature-flag')
@@ -81,6 +81,27 @@ export class FeatureFlagPresentation {
     async updateFeatureFlag(@Param('id', ParseIntPipe) id: number, @Body() featureFlagDto: FeatureFlagDto) {
         try {
             const flag = await this.featureFlagService.updateFeatureFlag(id, featureFlagDto);
+            return responseUtil({
+                statusCode: HttpStatus.OK,
+                message: "Feature flag actualizado",
+                data: flag,
+                estado: true,
+            });
+        } catch (error) {
+            return responseUtil({
+                message: error.message || 'Error al actualizar feature flag',
+                estado: false,
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            });
+        }
+    }
+
+    @Post('update_enabled/:id')
+    async updateFeatureFlagEnabled(@Param('id', ParseIntPipe) id: number, @Body() featureFlagDto: FeatureFlagDtoEnabled) {
+        try {
+            console.log("entro aqui ");
+
+            const flag = await this.featureFlagService.updateFeatureFlagEnabled(id, featureFlagDto);
             return responseUtil({
                 statusCode: HttpStatus.OK,
                 message: "Feature flag actualizado",

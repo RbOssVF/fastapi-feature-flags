@@ -17,3 +17,8 @@ export class FeatureFlagDto {
     @IsOptional()
     environment?: string;
 }
+
+export class FeatureFlagDtoEnabled {
+    @IsBoolean()
+    isEnabled: boolean;
+}

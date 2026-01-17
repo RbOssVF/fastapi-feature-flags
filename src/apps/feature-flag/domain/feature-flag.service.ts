@@ -3,7 +3,7 @@ import { FeatureFlag } from "./feature-flag.entity";
 export class FeatureFlagDomainService {
   constructor(
     private readonly repository: FeatureFlagRepository
-  ) {}
+  ) { }
 
   async create(featureFlag: FeatureFlag): Promise<FeatureFlag> {
     const exists = await this.repository.findByKey(featureFlag.key);
